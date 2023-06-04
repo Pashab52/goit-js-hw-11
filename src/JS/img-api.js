@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import Notiflix from 'notiflix';
 // import { searchValue } from '../index';
 
 const API_KEY = '37020257-50f9bd55f20927cb154e79678';
@@ -19,11 +20,14 @@ async function fetchImg(searchValue, page) {
         page: page,
       },
     });
+      
       console.log(searchValue);
 console.log(page);
     return data;
   } catch (error) {
-    console.log(error);
+     Notiflix.Notify.failure(
+       `Oops! Something went wrong! Try reloading the page!`
+     );
   }
 }
 
