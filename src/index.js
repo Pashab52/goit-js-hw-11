@@ -54,18 +54,18 @@ const observer = new IntersectionObserver(
   }, { rootMargin: '500px' });
     
 
-  const secondObserver = new IntersectionObserver(
-    entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          Notiflix.Notify.info(
-            "We're sorry, but you've reached the end of search results."
-          );
-        }
-      });
-    },
-    { rootMargin: '500px' }
-  );
+  // const secondObserver = new IntersectionObserver(
+  //   entries => {
+  //     entries.forEach(entry => {
+  //       if (entry.isIntersecting) {
+  //         Notiflix.Notify.info(
+  //           "We're sorry, but you've reached the end of search results."
+  //         );
+  //       }
+  //     });
+  //   },
+  //   { rootMargin: '500px' }
+  // );
 
 
 formRef.addEventListener('submit', handleSubmitFormImgSearch);
@@ -128,47 +128,48 @@ galleryRef.insertAdjacentHTML('beforeend', markup)
 
 
 async function getImg() {
-  
- 
   const data = await fetchImg(searchValue, page);
-  
 
-  
-    if (data.totalHits === 0) {
-        Notiflix.Notify.info('Sorry, there are no images matching your search query. Please try again.');
-      return;
-  };
-  
-  
-    renderMarkup(data);
-  
-    gallery.refresh();
-  
-  if (page === 1) {
-      // secondGuardRef.style.display = 'none';
-      //   observer.unobserve(secondGuardRef);
-      //   observer.unobserve(guardRef);
-      Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
+  if (data.totalHits === 0) {
+    Notiflix.Notify.info(
+      'Sorry, there are no images matching your search query. Please try again.'
+    );
+    return;
   }
-  
-    
+
+  renderMarkup(data);
+
+  gallery.refresh();
+
+  if (page === 1) {
+    // secondGuardRef.style.display = 'none';
+    //   observer.unobserve(secondGuardRef);
+    //   observer.unobserve(guardRef);
+    Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
+  }
+
+  if (page === 1 && data.totalHits <= 40) {
+    // secondGuardRef.style.display = 'none';
+    //   observer.unobserve(secondGuardRef);
+    console.log(data.totalHits);
+    observer.unobserve(guardRef);
+    return;
+  }
+
   if (Math.ceil(data.totalHits / 40) === page) {
-      console.log(Math.ceil(data.totalHits / 40));
-      observer.unobserve(guardRef);
-      // secondGuardRef.style.display = 'block';
-      // secondObserver.observe(secondGuardRef);
-      Notiflix.Notify.info(
-        "We're sorry, but you've reached the end of search results."
-      );
-      return;
-    };
+    observer.unobserve(guardRef);
+    // secondGuardRef.style.display = 'block';
+    // secondObserver.observe(secondGuardRef);
+    Notiflix.Notify.info(
+      "We're sorry, but you've reached the end of search results."
+    );
+    return;
+  }
   observer.observe(guardRef);
-  
+
   page += 1;
+}
 
- }
-
-// let gallery = new SimpleLightbox('.gallery a');
 
 
 
