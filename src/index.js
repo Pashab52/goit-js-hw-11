@@ -54,18 +54,18 @@ const observer = new IntersectionObserver(
   }, { rootMargin: '500px' });
     
 
-  // const secondObserver = new IntersectionObserver(
-  //   entries => {
-  //     entries.forEach(entry => {
-  //       if (entry.isIntersecting) {
-  //         Notiflix.Notify.info(
-  //           "We're sorry, but you've reached the end of search results."
-  //         );
-  //       }
-  //     });
-  //   },
-  //   { rootMargin: '500px' }
-  // );
+  const secondObserver = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          Notiflix.Notify.info(
+            "We're sorry, but you've reached the end of search results."
+          );
+        }
+      });
+    },
+    { rootMargin: '100px' }
+  );
 
 
 formRef.addEventListener('submit', handleSubmitFormImgSearch);
@@ -79,7 +79,6 @@ function handleSubmitFormImgSearch(event) {
   }
     secondGuardRef.style.display = 'none';
     galleryRef.innerHTML = '';
-    // clearTimeout(timeoutId);
     observer.unobserve(guardRef);
     page = 1;
     searchValue = inputValue;
@@ -142,27 +141,31 @@ async function getImg() {
   gallery.refresh();
 
   if (page === 1) {
-    // secondGuardRef.style.display = 'none';
-    //   observer.unobserve(secondGuardRef);
-    //   observer.unobserve(guardRef);
     Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
   }
 
+   if (page === 1 && data.totalHits <= 20) {
+
+     observer.unobserve(guardRef);
+     return;
+   }
+
   if (page === 1 && data.totalHits <= 40) {
-    // secondGuardRef.style.display = 'none';
-    //   observer.unobserve(secondGuardRef);
-    console.log(data.totalHits);
+
+    secondGuardRef.style.display = 'block';
+    secondObserver.observe(secondGuardRef);
+
     observer.unobserve(guardRef);
     return;
   }
 
   if (Math.ceil(data.totalHits / 40) === page) {
     observer.unobserve(guardRef);
-    // secondGuardRef.style.display = 'block';
-    // secondObserver.observe(secondGuardRef);
-    Notiflix.Notify.info(
-      "We're sorry, but you've reached the end of search results."
-    );
+    secondGuardRef.style.display = 'block';
+    secondObserver.observe(secondGuardRef);
+    // Notiflix.Notify.info(
+    //   "We're sorry, but you've reached the end of search results."
+    // );
     return;
   }
   observer.observe(guardRef);
