@@ -15,14 +15,14 @@ async function fetchImg(searchValue, page) {
         q: searchValue,
         image_type: 'photo',
         orientation: 'horizontal',
-        safesearch: 'false',
+        safesearch: 'true',
         per_page: 40,
         page: page,
       },
     });
       
-      console.log(searchValue);
-console.log(page);
+//       console.log(searchValue);
+// console.log(page);
     return data;
   } catch (error) {
      Notiflix.Notify.failure(
