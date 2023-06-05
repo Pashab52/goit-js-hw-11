@@ -94,9 +94,8 @@ function renderMarkup(data) {
           comments,
           downloads,
         }) => {
-          return `<a class="gallery__link" href="${largeImageURL}"><div class="photo-card">
- 
-      <img class="gallery__image" src="${webformatURL}" alt="${tags}" loading="lazy" />
+          return `<div class="photo-card">
+      <a class="gallery__link" href="${largeImageURL}"><img class="gallery__image" src="${webformatURL}" alt="${tags}" loading="lazy" /></a>
    
           <div class="info">
             <p class="info-item">
@@ -112,7 +111,7 @@ function renderMarkup(data) {
               <b>Downloads</b> ${downloads}
             </p>
           </div>
-        </div></a>`;
+        </div>`;
         }
       )
       .join('');
