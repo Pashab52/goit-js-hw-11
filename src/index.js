@@ -22,13 +22,20 @@ const secondGuardRef = document.querySelector('.secondGuard');
 
 Notiflix.Notify.init({
   width: '320px',
-  position: 'center-top', // 'right-top' - 'right-bottom' - 'left-top' - 'left-bottom' - 'center-top' - 'center-bottom' - 'center-center'
+  position: 'right-top', // 'right-top' - 'right-bottom' - 'left-top' - 'left-bottom' - 'center-top' - 'center-bottom' - 'center-center'
   timeout: 5000,
 });
 
 
 
-
+let gallery = new SimpleLightbox('.gallery a', {
+  animationSpeed: 150,
+  fadeSpeed: 150,
+  animationSlide: false,
+  showCounter: false,
+  captionDelay: 250,
+  captionsData: 'alt',
+});
 
 
 let page = 1;
@@ -95,20 +102,20 @@ function renderMarkup(data) {
           downloads,
         }) => {
           return `<div class="photo-card">
-      <a class="gallery__link" href="${largeImageURL}"><img class="gallery__image" src="${webformatURL}" alt="${tags}" loading="lazy" /></a>
+      <a class="gallery__link" href="${largeImageURL}"><img class="gallery__image" src="${webformatURL}" alt="${tags}" width="360px" height: "200px" loading="lazy" /></a>
    
           <div class="info">
             <p class="info-item">
-              <b>Likes</b> ${likes}
+              <b>Likes</b> <span class="data-wrapper">${likes}</span>
             </p>
             <p class="info-item">
-              <b>Views</b> ${views}
+              <b>Views</b> <span class="data-wrapper">${views}</span>
             </p>
             <p class="info-item">
-              <b>Comments</b> ${comments}
+              <b>Comments</b> <span class="data-wrapper">${comments}</span>
             </p>
             <p class="info-item">
-              <b>Downloads</b> ${downloads}
+              <b>Downloads</b> <span class="data-wrapper">${downloads}</span>
             </p>
           </div>
         </div>`;
@@ -131,32 +138,22 @@ async function getImg() {
         Notiflix.Notify.info('Sorry, there are no images matching your search query. Please try again.');
       return;
   };
-
-    
-    
-    
+  
+  
     renderMarkup(data);
-    
-  let gallery = new SimpleLightbox('.gallery a', {
-    animationSpeed: 150,
-    fadeSpeed: 150,
-    animationSlide: false,
-    showCounter: false,
-    captionDelay: 250,
-    captionsData: 'alt',
-  });
+  
+    gallery.refresh();
   
   if (page === 1) {
-      secondGuardRef.style.display = 'none';
-        observer.unobserve(secondGuardRef);
+      // secondGuardRef.style.display = 'none';
+      //   observer.unobserve(secondGuardRef);
       //   observer.unobserve(guardRef);
       Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
   }
   
     
-  if (Math.ceil(data.totalHits / 40) < page) {
+  if (Math.ceil(data.totalHits / 40) === page) {
       console.log(Math.ceil(data.totalHits / 40));
-      // if (data.totalHits.length < 40 && page !== 1)
       observer.unobserve(guardRef);
       // secondGuardRef.style.display = 'block';
       // secondObserver.observe(secondGuardRef);
@@ -166,6 +163,7 @@ async function getImg() {
       return;
     };
   observer.observe(guardRef);
+  
   page += 1;
 
  }
