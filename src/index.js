@@ -48,7 +48,15 @@ const observer = new IntersectionObserver(
     (entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                getImg();
+              getImg();
+              const { height: cardHeight } = document
+                .querySelector('.gallery')
+                .firstElementChild.getBoundingClientRect();
+              window.scrollBy({
+                top: cardHeight * 2,
+
+                behavior: 'smooth',
+              });
             }
         });
   }, { rootMargin: '500px' });
@@ -169,6 +177,8 @@ async function getImg() {
     return;
   }
   observer.observe(guardRef);
+
+
 
   page += 1;
 }
