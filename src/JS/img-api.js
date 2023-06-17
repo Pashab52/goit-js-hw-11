@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 
 import Notiflix from 'notiflix';
@@ -30,5 +31,4 @@ async function fetchImg(searchValue, page) {
      );
   }
 }
-
 export { fetchImg };

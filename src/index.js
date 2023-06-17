@@ -45,21 +45,23 @@ let searchValue = '';
 secondGuardRef.style.display = "none";
 
 const observer = new IntersectionObserver(
-    (entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              getImg();
-              const { height: cardHeight } = document
-                .querySelector('.gallery')
-                .firstElementChild.getBoundingClientRect();
-              window.scrollBy({
-                top: cardHeight * 2,
+  entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        getImg();
+        // const { height: cardHeight } = document
+        //   .querySelector('.gallery')
+        //   .firstElementChild.getBoundingClientRect();
+        // window.scrollBy({
+        //   top: cardHeight * 2,
 
-                behavior: 'smooth',
-              });
-            }
-        });
-  }, { rootMargin: '500px' });
+        //   behavior: 'smooth',
+        // });
+      }
+    });
+  },
+  { rootMargin: '500px' }
+);
     
 
   const secondObserver = new IntersectionObserver(
