@@ -110,7 +110,7 @@ function renderMarkup(data) {
           comments,
           downloads,
         }) => {
-          return `<div class="photo-card">
+          return `<div class="photo-card" >
       <a class="gallery__link" href="${largeImageURL}"><img class="gallery__image" src="${webformatURL}" alt="${tags}" width="360px" height: "200px" loading="lazy" /></a>
    
           <div class="info">
@@ -147,6 +147,15 @@ async function getImg() {
   }
 
   renderMarkup(data);
+
+//   const picts = document.querySelectorAll('.photo-card');
+//   picts.forEach((pict) => { pict.addEventListener('click', onClick);
+//   console.log(pict);
+// });
+//   function onClick(event) {
+//     console.log(event.currentTarget.dataset.id)
+//   }
+
 
   gallery.refresh();
 
